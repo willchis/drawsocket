@@ -16,6 +16,7 @@ console.log("Server running on port:" + port);
 
 // array of all lines drawn
 let line_history = [];
+let image;
 
 // event-handler for new incoming connections
 io.on('connection', (socket) => {
@@ -24,6 +25,16 @@ io.on('connection', (socket) => {
    for (var i in line_history) {
       socket.emit('draw_line', { line: line_history[i] } );
    }
+
+   // send any images
+   if (image) {
+      socket.emit('image', image.toString('base64'));
+   }
+
+   socket.on('image', (imageData) => {
+      image = imageData;
+      socket.emit('image', image.toString('base64'));
+   });
 
    // add handler for message type "draw_line".
    socket.on('draw_line', (data) => {
@@ -34,8 +45,8 @@ io.on('connection', (socket) => {
    });
 
    // add handler for clearing messages.
-   socket.on('clear_lines', function (data) {
-    line_history = [];
-    io.emit('clear_lines');
-});
+   socket.on('clear_lines', (data) => {
+      line_history = [];
+      io.emit('clear_lines');
+   });
 });

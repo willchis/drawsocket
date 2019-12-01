@@ -49,6 +49,14 @@ document.addEventListener("DOMContentLoaded", () => {
    socket.on('clear_lines', () => {
       context.clearRect(0, 0, canvas.width, canvas.height);
    });
+
+   socket.on("image", function(imageData) {
+      let img = new Image();
+      img.src = imageData;
+      img.onload = function() {
+         context.drawImage(img, 0, 0);
+       };
+    });
    
    // main loop, running every 25ms
    const mainLoop = () => {
@@ -73,4 +81,24 @@ const refreshPage = () => {
    if (socket) {
       socket.emit('clear_lines');
    }
-}
+};
+
+let selectedFile;
+
+const uploadImage = () => {
+   if(document.getElementById('FileBox').value != "") {
+      const reader = new FileReader();
+      reader.onload = (evnt) => {
+         socket.emit('image', evnt.target.result);
+      }
+      reader.readAsDataURL(selectedFile);
+   }
+   else
+   {
+      alert("Please select a file.");
+   }
+};
+
+const fileChosen = (evnt) => {
+   selectedFile = evnt.target.files[0];
+};
