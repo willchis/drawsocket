@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <title>Drawing</title>
+      <meta charset="utf-8">
+      <style>
+        * { 
+          margin: 0;
+          padding: 0;
+        }
+        body, html{
+          width: 100%;
+          height: 100%;
+        }
+        #canvas {
+          display: block;
+        }
+        #clear {
+          position: absolute;
+          top: 0;
+          right: 0;
+          font-size: 14px;
+          font-family: sans-serif;
+          cursor: pointer;
+          padding: 10px;
+          margin: 5px;
+          background-color: lightgrey;
+          border: 1px solid gray
+        }
+      </style>
+      <script src="socket.io/socket.io.js"></script>
+      <script src="/main.js"></script>
+   </head>
+   <body>
+     <div id="clear" onclick="refreshPage()">CLEAR</div>
+      <canvas id="drawing"></canvas>
+   </body>
+</html>

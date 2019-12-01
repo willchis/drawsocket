@@ -32,4 +32,10 @@ io.on('connection', (socket) => {
       // send line to all clients
       io.emit('draw_line', { line: data.line });
    });
+
+   // add handler for clearing messages.
+   socket.on('clear_lines', function (data) {
+    line_history = [];
+    io.emit('clear_lines');
+});
 });
